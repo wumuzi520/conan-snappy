@@ -14,7 +14,8 @@ class SnappyConan(ConanFile):
     generators = "cmake"
 
     def source(self):
-        self.run("git clone https://gitee.com/wumuzi520/snappy.git")
+        self.run("git clone https://github.com/google/snappy.git")
+        self.run("cd snappy && git checkout 1.1.7")
 
     def build(self):
         cmake = CMake(self)
