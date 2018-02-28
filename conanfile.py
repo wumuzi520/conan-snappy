@@ -8,7 +8,7 @@ class SnappyConan(ConanFile):
     url = "<Package recipe repository url here, for issues about the package>"
     description = "<Description of Snappy here>"
     settings = "os", "compiler", "build_type", "arch"
-    requires = "gflags/2.2.1@ant/stable"
+    requires = ("gflags/2.2.1@ant/stable", "zlib/1.2.11@ant/stable")
     options = {"shared": [True, False]}
     default_options = "shared=False"
     generators = "cmake"
