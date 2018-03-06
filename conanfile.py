@@ -1,39 +1,37 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from conans import ConanFile, CMake, tools
+import os
 
 
-class SnappyConan(ConanFile):
+class GflagsConan(ConanFile):
     name = "snappy"
     version = "1.1.7"
-    license = "<Put the package license here>"
-    url = "<Package recipe repository url here, for issues about the package>"
-    description = "<Description of Snappy here>"
+    description = "The snappy package contains a C++ library that implements commandline flags processing. "
+    url = "https://github.com/wumuzi520/conan-snappy"
+    license = 'BSD 3-clause'
+    exports = ["LICENSE.md"]
+    exports_sources = ["CMakeLists.txt", "FindSnappy.cmake"]
+    source_subfolder = "source_subfolder"
+    generators = "cmake"
     settings = "os", "compiler", "build_type", "arch"
-    requires = ("gflags/2.2.1@ant/stable", "zlib/1.2.11@ant/stable")
     options = {"shared": [True, False]}
     default_options = "shared=False"
-    generators = "cmake"
 
     def source(self):
-        self.run("git clone https://github.com/google/snappy.git")
-        self.run("cd snappy && git checkout 1.1.7")
+        source_url = "https://github.com/google/snappy"
+        tools.get("{0}/archive/{1}.tar.gz".format(source_url, self.version))
+        os.rename("%s-%s" % (self.name, self.version), self.source_subfolder)
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(source_folder="snappy")
+        cmake.configure()
         cmake.build()
-
-        # Explicit way:
-        # self.run('cmake %s/snappy %s' % (self.source_folder, cmake.command_line))
-        # self.run("cmake --build . %s" % cmake.build_config)
+        cmake.install()
 
     def package(self):
-        self.copy("*.h", dst="include", src="snappy")
-        self.copy("*.h", dst="include", keep_path=False)
-        self.copy("*snappy.lib", dst="lib", keep_path=False)
-        self.copy("*.dll", dst="bin", keep_path=False)
-        self.copy("*.so", dst="lib", keep_path=False)
-        self.copy("*.dylib", dst="lib", keep_path=False)
-        self.copy("*.a", dst="lib", keep_path=False)
+        self.copy("FindSnappy.cmake", ".", ".")
 
     def package_info(self):
-        self.cpp_info.libs = ["snappy"]
+        self.cpp_info.libs = tools.collect_libs(self)

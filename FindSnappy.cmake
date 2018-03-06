@@ -1,0 +1,18 @@
+#
+# Find SNAPPY
+#
+#  LIBSNAPPY_INCLUDE_DIR - where to find snappy.h, etc.
+#  LIBSNAPPY_LIBRARY     - List of libraries when using libsnappy.
+#  LIBSNAPPY_FOUND       - True if libsnappy found.
+
+FIND_PATH(LIBSNAPPY_INCLUDE_DIR snappy.h)
+
+FIND_LIBRARY(LIBSNAPPY_LIBRARY NAMES snappy)
+
+# handle the QUIETLY and REQUIRED arguments and set LIBSNAPPY_FOUND to TRUE if
+# all listed variables are TRUE
+INCLUDE(FindPackageHandleStandardArgs)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(SNAPPY DEFAULT_MSG LIBSNAPPY_LIBRARY LIBSNAPPY_INCLUDE_DIR)
+
+MARK_AS_ADVANCED(LIBSNAPPY_LIBRARY LIBSNAPPY_INCLUDE_DIR)
+
